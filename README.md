@@ -1,6 +1,6 @@
 [![Build Status](https://scrutinizer-ci.com/g/lingul/jsramverk/badges/build.png?b=master)](https://scrutinizer-ci.com/g/lingul/api-me/build-status/master)
 
-[![Build Status](https://api.travis-ci.com/lingul/MyEditor.svg?branch=master)](https://travis-ci.org/lingul/MyEditor)
+[![Build Status](https://api.travis-ci.com/lingul/MyEditor.svg?branch=master)](https://api.travis-ci.com/lingul/MyEditor.svg?branch=master)
 
 # Getting Started with Create React App
 
