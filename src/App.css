@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Arapey&family=Gothic+A1&family=Meddon&family=Arvo&family=Cormorant+Garamond:wght@300&family=Cormorant+Infant:wght@300&family=Cormorant:wght@300&family=DM+Serif+Display&family=Oswald&family=DM+Serif+Text&family=Inria+Serif:wght@300&family=Old+Standard+TT&family=Oranienbaum&family=Playfair+Display&family=Prata&family=Rozha+One&family=Ultra&family=Vidaloka&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Ubuntu&family=Barlow&family=Roboto&family=Open+Sans&family=Shanti&display=swap');
+
+html {
+  background-color: #f7f4ed;
+  font-family: Roboto;
+}
+
+
+.App {
+  text-align: center;
+  font-family: Roboto;
+}
+
+input {
+    width: 200px;
+}
+
+.button {
+    color: #828FAB;
+    background-color: #e7dece;
+    border: 1px solid #828FAB;
+    text-transform: uppercase;
+    padding: 10px;
+    text-decoration: none;
+    font-size:16px;
+}
+
+form textarea {
+    min-height: 500px;
+    min-width: 60%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+      border-radius: 50%;
+    /* animation: App-logo-spin infinite 40s linear; */
+  }
+}
+
+.App-header {
+  /* background-color: #282c34; */
+  background-color: #e7dece;
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+nav {
+    text-align: center;
+    min-height: 60px;
+    margin-top: 20px;
+    /* background-color: #f7f4ed; */
+}
+
+nav.reports a {
+    /* padding-top: 20px; */
+    color: black;
+    padding: 20px;
+    font-family: "Playfair Display";
+}
+
+ul {
+    margin-top: 50px;
+}
+
+nav li {
+    background-color: none;
+    display: inline;
+    margin: 10px;
+    padding: 20px;
+}
+
+li a {
+    color: black;
+    font-family: "Playfair Display";
+    /* text-transform: uppercase; */
+    text-decoration: none;
+    font-size: 24px;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+.article-standard {
+    background-color:#f7f4ed;
+    padding: 20px;
+    margin: auto;
+}
+
+.article-standard p {
+    width: 50%;
+    margin: 20px auto;
+    color: #727468;
+    font-family: "Barlow";
+}
+
+.article-standard a {
+    color: #222;
+}
+
+@media (max-width: 1000px) {
+    .article-standard p {
+        width: 70%;
+    }
+}
