@@ -19,7 +19,7 @@ async function sleep(ms) {
   })
 }
 
-// Test suite "Trade-app"
+// Use case 1 open browser
 describe("Trade-app", function() {
     // does something before execution of each test case in the test suite:
     beforeEach(async function() {
@@ -34,8 +34,8 @@ describe("Trade-app", function() {
     });
 
  
-    // Test case "Test if button for registration is enabled":
-    it("Page renders, button exists", async function() {
+    // Use case 2 Page renders, title exists:
+    it("Page renders, title exists", async function() {
       console.log(browser); 
       const elements = await browser.findElements(By.id("submit-button"))
       assert(elements.length>0);    
@@ -46,7 +46,7 @@ describe("Trade-app", function() {
           assert(title == "React App");
     });
 
-    // Test case "Test if button for registration is enabled":
+    // Use case 3 "Test if button returns filename from textfield":
     it("", async function() {
       console.log(browser); 
       const input = await browser.findElement(By.id("text-input"))

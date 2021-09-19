@@ -1,7 +1,8 @@
 let App = require('./App.css');
 let { Component } = require('react');
 let PropTypes = require('prop-types');
-let CKEditor = require('ckeditor4-react');
+let { CKEditor } = require('@ckeditor/ckeditor5-react');
+let ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
 let queryString = require('query-string');
 
 
@@ -11,7 +12,7 @@ class TwoWayBinding extends Component {
     constructor( props ) {
         super( props );
         this.state = {
-            data: 'test2',
+            data: 'default text',
             name: 'default.txt',
             files: [],
             oldData: []
@@ -23,8 +24,8 @@ class TwoWayBinding extends Component {
         this.getApiFiles();
     }
 
-    onEditorChange = ( evt ) => {
-        this.setState({data: evt.editor.getData()});
+    onEditorChange = ( evt, editor ) => {
+        this.setState({data: editor.getData()});
     }
  
     async getApiFiles() {
@@ -50,21 +51,15 @@ class TwoWayBinding extends Component {
 
     async setFileAndData(e) {
         await this.getApiFileData(e);
-        {this.state.oldData.map((f) => (
-            this.setState({data: f.data}),
-            this.setState({name: f.filename})
-            )) 
-        }
+        console.log(this.state.oldData);
+        this.state.oldData.map((f) => this.setState({data: f.data, name: f.filename}));
     }
 
     async reloadFile(fileName) {
-        //console.log(fileName);
         await this.setFileAndData(fileName);
-        //await this.getApiFiles();
     }
 
     onSelect(e) {
-        console.log(this);
         this.reloadFile(e.target.value);
     }
     
@@ -80,7 +75,7 @@ class TwoWayBinding extends Component {
     render() {
         return (
             <div>
-                <CKEditor
+                <CKEditor editor={ClassicEditor}
                     data={this.state.data}
                     onChange={this.onEditorChange} />
                     <input type="text" id="text-input" value={this.state.name} onChange={(e) => this.changeTitle(e)}/>

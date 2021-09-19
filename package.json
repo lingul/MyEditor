@@ -4,11 +4,12 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^29.2.0",
+    "@ckeditor/ckeditor5-react": "^3.0.2",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "chai-http": "^4.3.0",
     "chromedriver": "^93.0.1",
-    "ckeditor4-react": "^2.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "geckodriver": "^2.0.4",
@@ -19,6 +20,8 @@
     "react-scripts": "4.0.3",
     "requests": "^0.3.0",
     "selenium-webdriver": "^4.0.0-rc-1",
+    "slate": "^0.66.1",
+    "slate-react": "^0.66.1",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },
