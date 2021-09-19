@@ -20,7 +20,7 @@ async function sleep(ms) {
 }
 
 // Use case 1 open browser
-describe("Trade-app", function() {
+describe("Open-app", function() {
     // does something before execution of each test case in the test suite:
     beforeEach(async function() {
         this.timeout(100000);
