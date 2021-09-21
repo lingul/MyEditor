@@ -3,18 +3,16 @@ node_js:
     - "node"
     - "12"
 
-sudo: false
+addons:
+  chrome: stable
 
-git:
-    submodules: false
+cache:
+  directories:
+     - ./node_modules
 
-before_script:
-    - npm install
+install:
+  - npm install
 
 script:
-    - npm start & wait-on http://localhost:3000
-    - npm test
-
-after_success:
-    - npm run report-coveralls
-    - npm run report-codecov
+  - npm run test-travis -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+  - npm start & wait-on http://localhost:3000
