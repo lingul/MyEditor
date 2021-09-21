@@ -19,8 +19,6 @@ addons:
   apt:
     sources:
       - google-chrome
-    packages:
-      - chrome: stable
 # the following step should start the virtual X frame buffer: Xvfb process
 before_script:
   - "sh -e /etc/init.d/xvfb start"
