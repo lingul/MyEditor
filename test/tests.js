@@ -11,7 +11,12 @@ const chrome = require('selenium-webdriver/chrome');
 const By = webdriver.By;
 
 // The Selenium Webdriver object:
-let browser = new webdriver.Builder().forBrowser("chrome").build();
+
+let browser = new webdriver.Builder()
+.withCapabilities(webdriver.Capabilities.chrome())
+.setFirefoxOptions(new chrome.Options().headless())
+.forBrowser("chrome")
+.build();
 
 async function sleep(ms) {
   return new Promise((resolve) => {
@@ -58,8 +63,8 @@ describe("Open-app", function() {
       const button = await browser.findElement(By.id("submit-button"))
       assert(button);
       button.click();
-      this.timeout(3000);
-      await sleep(2000);
+      this.timeout(10000);
+      await sleep(5000);
       const select = await browser.findElement(By.id("file-select"));
       const options = await select.findElements(By.xpath(".//option"));
       
