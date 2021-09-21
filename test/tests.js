@@ -12,11 +12,7 @@ const By = webdriver.By;
 
 // The Selenium Webdriver object:
 
-let browser = new webdriver.Builder()
-.withCapabilities(webdriver.Capabilities.chrome())
-.setFirefoxOptions(new chrome.Options().headless())
-.forBrowser("chrome")
-.build();
+let browser = new webdriver.Builder().forBrowser("chrome").build();
 
 async function sleep(ms) {
   return new Promise((resolve) => {

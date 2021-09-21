@@ -9,11 +9,13 @@ sudo: false
 git:
     submodules: false
 
+install:
+  - npm install
+
 before_script:
-    - npm install
+  - npm start &
 
 script:
-    - npm start &
     - npm test
 
 after_success:
