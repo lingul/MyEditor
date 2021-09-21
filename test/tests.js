@@ -59,7 +59,7 @@ describe("Open-app", function() {
       const button = await browser.findElement(By.id("submit-button"))
       assert(button);
       button.click();
-      this.timeout(10000);
+      this.timeout(100000);
       await sleep(5000);
       const select = await browser.findElement(By.id("file-select"));
       const options = await select.findElements(By.xpath(".//option"));
@@ -67,6 +67,7 @@ describe("Open-app", function() {
       const optionsTexts = await Promise.all(options.map((option) => option.getText()));
       console.log(optionsTexts);
       assert(optionsTexts.find((option) => option == filename));
+      browser.quit();
     });
 
 });

@@ -2,3 +2,19 @@ language: node_js
 node_js:
     - "node"
     - "12"
+
+sudo: false
+
+git:
+    submodules: false
+
+before_script:
+    - npm install
+
+script:
+    - npm start & wait-on http://localhost:3000
+    - npm test
+
+after_success:
+    - npm run report-coveralls
+    - npm run report-codecov

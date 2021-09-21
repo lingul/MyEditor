@@ -30,7 +30,7 @@
     "deploy": "npm run build && rsync -av --delete build/ ligm19@ssh.student.bth.se:www/editor",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "nyc --reporter=html --reporter=text mocha --exit 'src/App.test.js'",
+    "test": "nyc --reporter=html --reporter=text mocha --exit 'test/**/*.js'",
     "coverage": "node_modules/.bin/nyc npm test",
     "coveralls": "node_modules/.bin/nyc report --reporter=text-lcov | coveralls -v",
     "eject": "react-scripts eject",
