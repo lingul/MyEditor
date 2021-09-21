@@ -1,27 +1,4 @@
 language: node_js
-
 node_js:
     - "node"
     - "12"
-
-sudo: false
-
-env:
-    global:
-        - MOZ_HEADLESS=1
-
-addons:
-    chrome: "93"
-
-git:
-    submodules: false
-
-before_script:
-    - npm install
-
-script:
-    - npm test
-
-after_success:
-    - npm run report-coveralls
-    - npm run report-codecov
