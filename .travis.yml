@@ -21,6 +21,7 @@ addons:
       - google-chrome
 # the following step should start the virtual X frame buffer: Xvfb process
 before_script:
+  - chromedriver-update 62.0.3202.94
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 #wait a while before xvfb to start
 
