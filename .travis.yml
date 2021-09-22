@@ -7,8 +7,6 @@ dist: trusty
 cache:
   directories:
     - node_modules
-language: node_js
-# setting up environment variables
 env:
   global:
     - CXX=g++-4.8
