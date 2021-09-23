@@ -9,7 +9,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "chai-http": "^4.3.0",
-    "chromedriver": "^2.46.0",
+    "chromedriver": "^93.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "geckodriver": "^2.0.4",
