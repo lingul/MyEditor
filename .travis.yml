@@ -14,9 +14,7 @@ env:
     - CHROME_BIN=/usr/bin/google-chrome
 # installing Chrome for e2e tests
 addons:
-  apt:
-    sources:
-      - google-chrome
+  chrome: beta
 # the following step should start the virtual X frame buffer: Xvfb process
 before_script:
   - "sh -e /etc/init.d/xvfb start"
