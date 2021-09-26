@@ -3,7 +3,7 @@ node_js:
     - "node"
     - "12"
 sudo: required
-dist: trusty
+dist: focal
 cache:
   directories:
     - node_modules

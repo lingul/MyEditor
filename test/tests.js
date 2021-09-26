@@ -60,7 +60,7 @@ describe("Open-app", function() {
       assert(button);
       button.click();
       this.timeout(100000);
-      await sleep(5000);
+      await sleep(10000);
       const select = await browser.findElement(By.id("file-select"));
       const options = await select.findElements(By.xpath(".//option"));
       

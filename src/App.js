@@ -4,20 +4,37 @@ let PropTypes = require('prop-types');
 let { CKEditor } = require('@ckeditor/ckeditor5-react');
 let ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
 let queryString = require('query-string');
+let cors = require('cors');
+let currentRoom = null;
 
 
+//Socket
+let io = require('socket.io-client');
+const ENDPOINT = "http://localhost:1337";
+const socket = io(ENDPOINT);
 
+/*
+socket.on('connect', function() {
+    socket.emit("create", "tsesttee");
+});
+*/
 
 class TwoWayBinding extends Component {
     constructor( props ) {
         super( props );
         this.state = {
-            data: 'default text',
-            name: 'default.txt',
+            data: '',
+            name: '',
             files: [],
-            oldData: []
+            oldData: [],
+            prevData: ''
         };
-        
+        socket.on('created', ({data, filename}) => {
+            this.setState({data, name: filename, prevData: data});
+        });
+        socket.on("updated", (data) => {
+            this.setState({data, prevData: data});
+        })
     }
     
     componentDidMount() {
@@ -26,6 +43,9 @@ class TwoWayBinding extends Component {
 
     onEditorChange = ( evt, editor ) => {
         this.setState({data: editor.getData()});
+        if(this.state.prevData !== editor.getData()) {
+            currentRoom && socket.emit("update", currentRoom, editor.getData());
+        }
     }
  
     async getApiFiles() {
@@ -60,7 +80,15 @@ class TwoWayBinding extends Component {
     }
 
     onSelect(e) {
-        this.reloadFile(e.target.value);
+        if(e.currentTarget.value) {
+            if(currentRoom) {
+                socket.emit("leave", currentRoom);
+            }
+            socket.emit("create", e.currentTarget.value);
+            currentRoom = e.currentTarget.value;
+        }
+        //Changed to websocket instead of rest.
+        //this.reloadFile(e.target.value);
     }
     
     async handleClick() {
@@ -80,9 +108,12 @@ class TwoWayBinding extends Component {
                     onChange={this.onEditorChange} />
                     <input type="text" id="text-input" value={this.state.name} onChange={(e) => this.changeTitle(e)}/>
                     <button id="submit-button" onClick={(e) => this.handleClick(e)}>
-                        Spara
+                        Skapa
                     </button>
                     <select id="file-select" onChange={(e) => this.onSelect(e)}>
+                    <option key={'nothing'} value={undefined}
+                        >{"--Välj en fil--"}
+                    </option>
                     {this.state.files.map((f) => (
                         <option key={f._id} value={f._id}
                         >{f.filename}
