@@ -3,6 +3,8 @@ node_js:
     - "node"
     - "12"
 sudo: required
+services:
+  - xvfb
 dist: focal
 cache:
   directories:
@@ -17,7 +19,6 @@ addons:
   chrome: beta
 # the following step should start the virtual X frame buffer: Xvfb process
 before_script:
-  - "sh -e /etc/init.d/xvfb start"
   - sleep 3 #wait a while before xvfb to start
 
 script:
