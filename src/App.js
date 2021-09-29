@@ -4,20 +4,17 @@ let PropTypes = require('prop-types');
 let { CKEditor } = require('@ckeditor/ckeditor5-react');
 let ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
 let queryString = require('query-string');
-let cors = require('cors');
 let currentRoom = null;
 
+//Login and Register
+//let Login = require('./components/Login');
+//let Register = require('./components/Register');
 
 //Socket
 let io = require('socket.io-client');
+//const ENDPOINT = "https://jsramverk-editor-ligm19.azurewebsites.net";
 const ENDPOINT = "http://localhost:1337";
 const socket = io(ENDPOINT);
-
-/*
-socket.on('connect', function() {
-    socket.emit("create", "tsesttee");
-});
-*/
 
 class TwoWayBinding extends Component {
     constructor( props ) {
@@ -49,13 +46,13 @@ class TwoWayBinding extends Component {
     }
  
     async getApiFiles() {
-        return fetch('http://localhost:1337/getdocs', { method: 'GET' })
+        return fetch(ENDPOINT + '/getdocs', { method: 'GET', headers: { 'Content-Type': 'application/x-www-form-urlencoded'} })
             .then(data => data.json()) // Parsing the data into a JavaScript object
             .then(json => this.setState({files: json.mess})); // Displaying the stringified data in an alert popup
     }
 
     async postApi() {
-        return fetch('http://localhost:1337/save', {
+        return fetch(ENDPOINT + '/save', {
             method: 'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
             body: queryString.stringify({filename:this.state.name, data:this.state.data}) //use the stringify object of the queryString class
@@ -63,8 +60,8 @@ class TwoWayBinding extends Component {
     }
 
     async getApiFileData(idToData) {
-        let myURL = 'http://localhost:1337/getdata?id=' + idToData;
-        await fetch(myURL, { method: 'GET' })
+        let myURL = ENDPOINT + '/getdata?id=' + idToData;
+        await fetch(myURL, { method: 'GET', headers: {'Content-Type':'application/x-www-form-urlencoded'}})
             .then(data => data.json()) // Parsing the data into a JavaScript object
             .then(json => this.setState({oldData: json.mess}));
         }
