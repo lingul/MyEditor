@@ -1,3 +1,7 @@
+import { BrowserRouter, Switch, Route, Router, Link } from 'react-router-dom';
+import Login from './components/Login';
+import Register from './components/Register';
+const ENDPOINT = require("./config");
 let App = require('./App.css');
 let { Component } = require('react');
 let PropTypes = require('prop-types');
@@ -5,15 +9,13 @@ let { CKEditor } = require('@ckeditor/ckeditor5-react');
 let ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
 let queryString = require('query-string');
 let currentRoom = null;
-
-//Login and Register
-//let Login = require('./components/Login');
-//let Register = require('./components/Register');
+//import { Button, FormGroup, InputGroup } from "@blueprintjs/core";
+//import React, { useState } from "react"
 
 //Socket
 let io = require('socket.io-client');
 //const ENDPOINT = "https://jsramverk-editor-ligm19.azurewebsites.net";
-const ENDPOINT = "http://localhost:1337";
+//const ENDPOINT = "http://localhost:1337";
 const socket = io(ENDPOINT);
 
 class TwoWayBinding extends Component {
@@ -24,7 +26,9 @@ class TwoWayBinding extends Component {
             name: '',
             files: [],
             oldData: [],
-            prevData: ''
+            prevData: '',
+            checkbox: false,
+            login: false
         };
         socket.on('created', ({data, filename}) => {
             this.setState({data, name: filename, prevData: data});
@@ -87,6 +91,15 @@ class TwoWayBinding extends Component {
         //Changed to websocket instead of rest.
         //this.reloadFile(e.target.value);
     }
+
+    handleCheckBox(e) {
+        if(this.state.checkbox) {
+            this.state.checkbox = false;
+        }
+        else {
+            this.state.checkbox = true;
+        }
+    }
     
     async handleClick() {
         await this.postApi();
@@ -98,11 +111,30 @@ class TwoWayBinding extends Component {
     }
     
     render() {
+        if(!this.state.login) {
+            return(
+                <div>
+                    <h1>Logga in här</h1>
+                    <BrowserRouter>
+                        <a href='/login'>Logga in</a>
+                        <Route path='/login' component={Login} />
+                    </BrowserRouter>
+                    <h1>Registrera dig här</h1>
+                    <BrowserRouter>
+                        <a href='/register'>Registrera</a>
+                        <Route path='/register' component={Register} />
+                    </BrowserRouter>
+                </div>
+            );
+        }
+        else {
         return (
             <div>
                 <CKEditor editor={ClassicEditor}
                     data={this.state.data}
                     onChange={this.onEditorChange} />
+                    <input type="checkbox" id="access" name="accept" value="yes" onClick={(e) => this.handleCheckBox(e)}/>Hemligt dokument?
+                    <br />
                     <input type="text" id="text-input" value={this.state.name} onChange={(e) => this.changeTitle(e)}/>
                     <button id="submit-button" onClick={(e) => this.handleClick(e)}>
                         Skapa
@@ -120,7 +152,27 @@ class TwoWayBinding extends Component {
                     </select>
             </div>
         );
+        }
     }
-}
+    }
 
 export default TwoWayBinding;
+/*
+if(!this.state.login) {
+    return(
+        <div>
+            <h1>Logga in här</h1>
+            <BrowserRouter>
+                <a href='/login'>Logga in</a>
+                <Route path='/login' component={Login} />
+            </BrowserRouter>
+            <h1>Registrera dig här</h1>
+            <BrowserRouter>
+                <a href='/register'>Registrera</a>
+                <Route path='/register' component={Register} />
+            </BrowserRouter>
+        </div>
+    );
+}
+else {
+    */

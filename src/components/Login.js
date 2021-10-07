@@ -1,4 +1,6 @@
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import React, { Component } from "react";
+import Register from './Register';
 import {
     Redirect,
     Link,
@@ -15,51 +17,51 @@ class Login extends Component {
           redirect: null,
           msg: ""
         };
-  }
+    }
 
-  submitHandler = (event) => {
-      event.preventDefault();
-      const url = 'http://localhost:1337/login/';
+    submitHandler = (event) => {
+        event.preventDefault();
+        const url = 'http://localhost:1337/login/';
 
-      let payload={
-          'email': this.state.email,
-          'password': this.state.password
-      }
+        let payload={
+            'email': this.state.email,
+            'password': this.state.password
+        }
 
-      fetch(url, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload)
-      })
-        .then(response => response.json())
-        .then(data => {
-            if (data.data) {
-                auth.token = data.data.token;
-                this.setState({ msg: 'Login successful'});
-            } else if (data.errors) {
-                auth.token = "";
-                this.setState({ msg: data.errors.detail });
-            }
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
         })
-        .catch((error) => {
-            this.setState({ msg: error.details });
-        });
-  };
+            .then(response => response.json())
+            .then(data => {
+                if (data.data) {
+                    auth.token = data.data.token;
+                    this.setState({ msg: 'Login successful'});
+                } else if (data.errors) {
+                    auth.token = "";
+                    this.setState({ msg: data.errors.detail });
+                }
+            })
+            .catch((error) => {
+                this.setState({ msg: error.details });
+            });
+    };
 
-  changeHandler = (event) => {
-      let name = event.target.name;
-      let value = event.target.value;
-      this.setState({[name]: value})
-  };
+    changeHandler = (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+        this.setState({[name]: value})
+    };
 
-  render() {
-      if (this.state.redirect) {
-          return <Redirect to={this.state.redirect} />
-      }
-      return (
-          <main>
+    render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+        return (
+            <main>
               <h2>Logga In</h2>
               <p>{this.state.msg}</p>
               <form onSubmit={this.submitHandler}>
@@ -87,12 +89,9 @@ class Login extends Component {
                       type='submit'
                   />
               </form>
-                <Link to="register">Registrering</Link>
-          </main>
-      );
-  }
+            </main>
+        );
+    }
 }
 
-
-
-export { Login };
+export default Login;
