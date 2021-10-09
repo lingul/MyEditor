@@ -6,16 +6,16 @@ import {
     Link,
 } from "react-router-dom";
 
-import { auth } from "./Auth.js";
+let queryString = require('query-string');
 
 class Login extends Component {
-  constructor() {
-      super();
+  constructor(props) {
+      super(props);
       this.state = {
           email: "",
           password: "",
-          redirect: null,
-          msg: ""
+          msg: "",
+          redirect: false
         };
     }
 
@@ -23,29 +23,26 @@ class Login extends Component {
         event.preventDefault();
         const url = 'http://localhost:1337/login/';
 
-        let payload={
-            'email': this.state.email,
-            'password': this.state.password
-        }
 
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({email: this.state.email, password: this.state.password})
         })
             .then(response => response.json())
             .then(data => {
                 if (data.data) {
-                    auth.token = data.data.token;
-                    this.setState({ msg: 'Login successful'});
+                    this.props.onToken(data.data.token);
+                    this.setState({ msg: 'Login successful', redirect: true});
                 } else if (data.errors) {
-                    auth.token = "";
+                    console.log("DATA", data)
                     this.setState({ msg: data.errors.detail });
                 }
             })
             .catch((error) => {
+                console.log("CATCH", error)
                 this.setState({ msg: error.details });
             });
     };
@@ -58,7 +55,8 @@ class Login extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect to={this.state.redirect} />
+            this.props.history.push('/');
+            return null;
         }
         return (
             <main>

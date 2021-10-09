@@ -19,8 +19,8 @@ class Register extends Component {
     async registerUser() {
         await fetch(ENDPOINT, {
             method: 'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
-            body: queryString.stringify({email: this.state.email, password: this.state.password})
+            headers: {'Content-Type':'application/json'}, // this line is important, if this content-type is not set it wont work
+            body: JSON.stringify({email: this.state.email, password: this.state.password})
         });
         console.log("I gerister");
                 

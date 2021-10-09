@@ -1,6 +1,7 @@
 import { BrowserRouter, Switch, Route, Router, Link } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
+import { createBrowserHistory } from 'history';
 const ENDPOINT = require("./config");
 let App = require('./App.css');
 let { Component } = require('react');
@@ -17,6 +18,7 @@ let io = require('socket.io-client');
 //const ENDPOINT = "https://jsramverk-editor-ligm19.azurewebsites.net";
 //const ENDPOINT = "http://localhost:1337";
 const socket = io(ENDPOINT);
+const history = createBrowserHistory();
 
 class TwoWayBinding extends Component {
     constructor( props ) {
@@ -28,7 +30,7 @@ class TwoWayBinding extends Component {
             oldData: [],
             prevData: '',
             checkbox: false,
-            login: false
+            token: ''
         };
         socket.on('created', ({data, filename}) => {
             this.setState({data, name: filename, prevData: data});
@@ -36,10 +38,6 @@ class TwoWayBinding extends Component {
         socket.on("updated", (data) => {
             this.setState({data, prevData: data});
         })
-    }
-    
-    componentDidMount() {
-        this.getApiFiles();
     }
 
     onEditorChange = ( evt, editor ) => {
@@ -50,7 +48,7 @@ class TwoWayBinding extends Component {
     }
  
     async getApiFiles() {
-        return fetch(ENDPOINT + '/getdocs', { method: 'GET', headers: { 'Content-Type': 'application/x-www-form-urlencoded'} })
+        return fetch(ENDPOINT + '/getdocs', { method: 'GET', headers: {'Authorization': `Bearer ${this.state.token}`}})
             .then(data => data.json()) // Parsing the data into a JavaScript object
             .then(json => this.setState({files: json.mess})); // Displaying the stringified data in an alert popup
     }
@@ -58,14 +56,14 @@ class TwoWayBinding extends Component {
     async postApi() {
         return fetch(ENDPOINT + '/save', {
             method: 'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
-            body: queryString.stringify({filename:this.state.name, data:this.state.data}) //use the stringify object of the queryString class
+            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${this.state.token}`}, // this line is important, if this content-type is not set it wont work
+            body: JSON.stringify({filename:this.state.name, data:this.state.data, group:this.state.checkbox})
         });
     }
 
     async getApiFileData(idToData) {
         let myURL = ENDPOINT + '/getdata?id=' + idToData;
-        await fetch(myURL, { method: 'GET', headers: {'Content-Type':'application/x-www-form-urlencoded'}})
+        await fetch(myURL, { method: 'GET', headers: {'Authorization': `Bearer ${this.state.token}`}})
             .then(data => data.json()) // Parsing the data into a JavaScript object
             .then(json => this.setState({oldData: json.mess}));
         }
@@ -111,18 +109,26 @@ class TwoWayBinding extends Component {
     }
     
     render() {
-        if(!this.state.login) {
+        if(!this.state.token) {
             return(
                 <div>
                     <h1>Logga in här</h1>
-                    <BrowserRouter>
-                        <a href='/login'>Logga in</a>
-                        <Route path='/login' component={Login} />
-                    </BrowserRouter>
+                    <BrowserRouter history={history}>
+                        <Link to='/login'>Logga in</Link>
+                        <Route
+                            exact path='/login'
+                            render={
+                                (props) => (<Login {...props} onToken={(token) => {
+                                    this.setState({token: token})
+                                    socket.emit('auth', token)
+                                    this.getApiFiles();
+                                }} />)
+                                //Same as above -> function onToken(token){this.setState({token:token})}
+                            }
+                        />
                     <h1>Registrera dig här</h1>
-                    <BrowserRouter>
-                        <a href='/register'>Registrera</a>
-                        <Route path='/register' component={Register} />
+                        <Link to='/register'>Registrera</Link>
+                        <Route exact path='/register' component={Register} />
                     </BrowserRouter>
                 </div>
             );
