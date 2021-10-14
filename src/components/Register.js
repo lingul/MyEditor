@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 let queryString = require('query-string');
 const url = require("../config");
-const ENDPOINT = url + "/register"
+const ENDPOINT = url + "/register";
 
 class Register extends Component {
     constructor() {
@@ -22,31 +22,10 @@ class Register extends Component {
             headers: {'Content-Type':'application/json'}, // this line is important, if this content-type is not set it wont work
             body: JSON.stringify({email: this.state.email, password: this.state.password})
         });
-        console.log("I gerister");
-                
-/*
-        fetch(ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('success, ', data);
-                    //creates a redirect to login site
-                    this.setState({ redirect: '/login'});
-                })
-                .catch((error) => {
-                    console.error('Error: ', error);
-                });*/
+
     };
     async submitHandler(e) {
-        console.log("Innan");
         await this.registerUser();
-        console.log("Efter");
-
     };
 
     changeHandler = (event) => {
@@ -63,7 +42,7 @@ class Register extends Component {
             <main>
                 <h3>Registrera dig</h3>
                 <form onSubmit={(e) => this.submitHandler(e)}>
-                    <label>Enter email </label>
+                    <label>Email </label>
                     <br/>
                     <input
                         type='text'
@@ -73,7 +52,7 @@ class Register extends Component {
                         autoComplete='username'
                     />
                     <br/>
-                    <label>Enter Password (minimum 8 characters)</label>
+                    <label>Lösenord (minimum 8)</label>
                     <br/>
                     <input
                         type='password'

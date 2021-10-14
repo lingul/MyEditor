@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 
 let queryString = require('query-string');
+const url = require("../config");
+const ENDPOINT = url + "/login";
 
 class Login extends Component {
   constructor(props) {
@@ -21,10 +23,8 @@ class Login extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        const url = 'http://localhost:1337/login/';
 
-
-        fetch(url, {
+        fetch(ENDPOINT, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,10 +60,10 @@ class Login extends Component {
         }
         return (
             <main>
-              <h2>Logga In</h2>
+              <h2>Logga in</h2>
               <p>{this.state.msg}</p>
               <form onSubmit={this.submitHandler}>
-                  <label>Enter email </label>
+                  <label>Email </label>
                   <br/>
                   <input
                       type='text'
@@ -73,7 +73,7 @@ class Login extends Component {
                       autoComplete='username'
                   />
                   <br/>
-                  <label>Enter Password </label>
+                  <label>Lösenord </label>
                   <br/>
                   <input
                       type='password'

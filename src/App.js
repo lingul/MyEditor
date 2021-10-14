@@ -53,6 +53,13 @@ class TwoWayBinding extends Component {
             .then(json => this.setState({files: json.mess})); // Displaying the stringified data in an alert popup
     }
 
+    async getApiFiles1() {
+        const data = await fetch(ENDPOINT + '/graphql', {
+            method: 'GET', 
+            headers: {'Authorization': `Bearer ${this.state.token}`}});
+        return data.json(); // Parsing the data into a JavaScript object
+    }
+
     async postApi() {
         return fetch(ENDPOINT + '/save', {
             method: 'POST',
@@ -101,7 +108,9 @@ class TwoWayBinding extends Component {
     
     async handleClick() {
         await this.postApi();
-        await this.getApiFiles();
+        //await this.getApiFiles();
+        const answer = await this.getApiFiles1();
+        this.setState({files: answer.mess});
     }
     
     changeTitle(e){
@@ -112,7 +121,6 @@ class TwoWayBinding extends Component {
         if(!this.state.token) {
             return(
                 <div>
-                    <h1>Logga in här</h1>
                     <BrowserRouter history={history}>
                         <Link to='/login'>Logga in</Link>
                         <Route
@@ -126,7 +134,6 @@ class TwoWayBinding extends Component {
                                 //Same as above -> function onToken(token){this.setState({token:token})}
                             }
                         />
-                    <h1>Registrera dig här</h1>
                         <Link to='/register'>Registrera</Link>
                         <Route exact path='/register' component={Register} />
                     </BrowserRouter>
@@ -163,22 +170,3 @@ class TwoWayBinding extends Component {
     }
 
 export default TwoWayBinding;
-/*
-if(!this.state.login) {
-    return(
-        <div>
-            <h1>Logga in här</h1>
-            <BrowserRouter>
-                <a href='/login'>Logga in</a>
-                <Route path='/login' component={Login} />
-            </BrowserRouter>
-            <h1>Registrera dig här</h1>
-            <BrowserRouter>
-                <a href='/register'>Registrera</a>
-                <Route path='/register' component={Register} />
-            </BrowserRouter>
-        </div>
-    );
-}
-else {
-    */
