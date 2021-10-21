@@ -15,8 +15,6 @@ let currentRoom = null;
 
 //Socket
 let io = require('socket.io-client');
-//const ENDPOINT = "https://jsramverk-editor-ligm19.azurewebsites.net";
-//const ENDPOINT = "http://localhost:1337";
 const socket = io(ENDPOINT);
 const history = createBrowserHistory();
 
@@ -62,6 +60,14 @@ class TwoWayBinding extends Component {
 
     async postApi() {
         return fetch(ENDPOINT + '/save', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${this.state.token}`}, // this line is important, if this content-type is not set it wont work
+            body: JSON.stringify({filename:this.state.name, data:this.state.data, group:this.state.checkbox})
+        });
+    }
+
+    async postDataToPDF() {
+        return fetch(ENDPOINT + '/print', {
             method: 'POST',
             headers: {'Content-Type':'application/json', 'Authorization': `Bearer ${this.state.token}`}, // this line is important, if this content-type is not set it wont work
             body: JSON.stringify({filename:this.state.name, data:this.state.data, group:this.state.checkbox})
@@ -116,6 +122,48 @@ class TwoWayBinding extends Component {
     changeTitle(e){
         this.setState({name: e.target.value});
     }
+
+    async sendEmail() {  
+        const data = await fetch(ENDPOINT + '/mail', {
+            method: 'POST', 
+            headers: {'Authorization': `Bearer ${this.state.token}`}});
+            return data.json(); // Parsing the data into a JavaScript object
+    };
+
+    async getPDF() {
+        return fetch(ENDPOINT + '/getpdf', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/pdf",
+                'Authorization': `Bearer ${this.state.token}`
+            }
+        })
+    };
+    async clickMe(e) {
+        const response = await this.postDataToPDF();
+        const res = await this.getPDF();
+        const pdfBlob = await res.blob();
+        const url = window.URL.createObjectURL(
+        new Blob([pdfBlob]),
+        );
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute(
+        'download',
+        `dokument.pdf`,
+        );
+
+        // Append to html link element page
+        document.body.appendChild(link);
+
+        // Start download
+        link.click();
+
+        // Clean up and remove the link
+        link.parentNode.removeChild(link);
+
+    };
     
     render() {
         if(!this.state.token) {
@@ -163,6 +211,12 @@ class TwoWayBinding extends Component {
                         )) 
                     }
                     </select>
+                    <button id="click-button" onClick={(e) => this.clickMe(e)}>
+                        Skriv ut PDF
+                    </button>
+                    <button id="mail-button" onClick={(e) => this.sendEmail(e)}>
+                        Skicka mejl
+                    </button>
             </div>
         );
         }
